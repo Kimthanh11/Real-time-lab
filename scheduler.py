@@ -16,7 +16,7 @@ class Scheduler:
     SCH_tasks_G = []
     current_index_task = 0
 
-    def __int__(self):
+    def __init__(self):
         return
 
     def SCH_Init(self):

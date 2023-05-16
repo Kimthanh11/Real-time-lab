@@ -47,6 +47,6 @@ class Scheduler:
 
     def SCH_Delete(self, aTask):
         return
-
+ 
     def SCH_GenerateID(self):
         return -1

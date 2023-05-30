@@ -1,6 +1,7 @@
 from keras.models import load_model
 import cv2
 import numpy as np
+from Adafruit_IO import MQTTClient
 
 class Detection:
     model = None
@@ -10,8 +11,15 @@ class Detection:
     cameraID = None
     delay = None
     count = None
+    client = None
     def __init__(self, index, delay):
         print("Init task 1")
+
+        # Initiate connection to personal profile in io.adafruit.com
+        self.client = MQTTClient("name_goes_here","key_goes_here")
+        self.client.connect()
+        self.client.loop_background()
+
         np.set_printoptions(suppress=True)
         self.delay = delay
         self.count = delay
@@ -40,10 +48,18 @@ class Detection:
         index = np.argmax(prediction)
         class_name = self.class_names[index]
         confidence_score = prediction[0][index]
+
+        # Round up and stringify confidence score
+        confidenceScore = str(np.round(confidence_score * 100))[:-2]
+
+        # Print the information to the console
         print("=============================")
         print("Camera " + str(self.cameraID))
         print("Class:", class_name[2:], end="")
-        print("Confidence Score:", str(np.round(confidence_score * 100))[:-2], "%")
+        print("Confidence Score:", confidenceScore, "%")
+
+        # Upload the confidennce score to acceptance rate feed of the connected client
+        self.client.publish("confidence score", confidenceScore)
     def run(self):
         if(self.count == 0):
             self.count = self.delay

@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from  Adafruit_IO import  MQTTClient
 
-client = MQTTClient("vnmduy2002" , "aio_hEkU80xjFwFZj1zJDFZC8joulk4n")
+client = MQTTClient("vnmduy2002" , "your_key_here")
 
 class Task1:
     def __init__(self):

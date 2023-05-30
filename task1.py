@@ -3,13 +3,23 @@ import cv2
 import numpy as np
 from  Adafruit_IO import  MQTTClient
 
-client = MQTTClient("vnmduy2002" , "your_key_here")
-
 class Task1:
+    client = None
+    model = None
+    class_names = None
+    camera = None
+    index = None
+    def connect(self):
+        self.client = MQTTClient("vnmduy2002" , "aio_wmKQ90IIfNvpmifQJNeQoW4vwI6I")
+        self.client.connect()
+        self.client.loop_background()
+        return
+
     def __init__(self):
-        client.connect()
-        client.loop_background()
+
         print("Init task 1")
+
+        self.connect()
         np.set_printoptions(suppress=True)
 
         # Load the model
@@ -20,8 +30,14 @@ class Task1:
 
         # CAMERA can be 0 or 1 based on default camera of your computer
         self.camera = cv2.VideoCapture(0)
-        self.cameraID = 0
         return
+    
+    def modelPredict(self, image):
+        prediction = self.model.predict(image)
+        index = np.argmax(prediction)
+        class_name = self.class_names[index]
+        confidence_score = prediction[0][index]
+        return class_name, confidence_score
     
     def Task1_Run(self):
         print("Task 1 is activated")
@@ -42,14 +58,11 @@ class Task1:
         image = (image / 127.5) - 1
 
         # Predicts the model
-        prediction = self.model.predict(image)
-        index = np.argmax(prediction)
-        class_name = self.class_names[index]
-        confidence_score = prediction[0][index]
+        class_name, confidence_score = self.modelPredict(image)
 
         # Print prediction and confidence score
         final_score = str(np.round(confidence_score * 100))[:-2]
         print("Class:", class_name[2:], end="")
         print("Confidence Score:", final_score, "%")
 
-        client.publish("acceptance rate", final_score)
+        self.client.publish("acceptance rate", final_score)

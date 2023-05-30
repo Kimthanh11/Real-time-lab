@@ -1,9 +1,14 @@
 from keras.models import load_model
 import cv2
 import numpy as np
+from  Adafruit_IO import  MQTTClient
+
+client = MQTTClient("vnmduy2002" , "aio_hEkU80xjFwFZj1zJDFZC8joulk4n")
 
 class Task1:
     def __init__(self):
+        client.connect()
+        client.loop_background()
         print("Init task 1")
         np.set_printoptions(suppress=True)
 
@@ -43,5 +48,8 @@ class Task1:
         confidence_score = prediction[0][index]
 
         # Print prediction and confidence score
+        final_score = str(np.round(confidence_score * 100))[:-2]
         print("Class:", class_name[2:], end="")
-        print("Confidence Score:", str(np.round(confidence_score * 100))[:-2], "%")
+        print("Confidence Score:", final_score, "%")
+
+        client.publish("acceptance rate", final_score)

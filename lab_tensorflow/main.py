@@ -13,14 +13,16 @@ class_names = open("lab_tensorflow\\labels.txt", "r").readlines()
 
 # CAMERA can be 0 or 1 based on default camera of your computer
 camera = cv2.VideoCapture(0)
+camera2 = cv2.VideoCapture("http://172.16.134.187:4747/video")
 
 while True:
     # Grab the webcamera's image.
     ret, image = camera.read()
-
+    # Grab second camera
+    ret2, image2 = camera2.read()
     # Resize the raw image into (224-height,224-width) pixels
     image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
-
+    cv2.imshow("hehe", image2)
     # Show the image in a window
     cv2.imshow("Webcam Image", image)
 
@@ -43,7 +45,7 @@ while True:
     # Listen to the keyboard for presses.
     keyboard_input = cv2.waitKey(1)
     # make it run every 5 seconds
-    time.sleep(5) 
+    # time.sleep(1) 
     # 27 is the ASCII for the esc key on your keyboard.
     if keyboard_input == 27:
         break

@@ -7,6 +7,17 @@ from task2 import *
 scheduler = Scheduler()
 scheduler.SCH_Init()
 
+#O(1) schedule
+# class TimerTask:
+#     def __init__(self):
+#         pass
+
+#     def run(self):
+#         print(f"At time: {self.timer}")
+#         self.timer += 1
+
+#     timer = 0
+
 task1 = Task1()
 task2 = Task2()
 

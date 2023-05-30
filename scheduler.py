@@ -11,7 +11,7 @@ class Task:
     TaskID = -1
 
 class Scheduler:
-    TICK = 1000
+    TICK = 100
     SCH_MAX_TASKS = 40
     SCH_tasks_G = []
     current_index_task = 0

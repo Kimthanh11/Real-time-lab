@@ -10,7 +10,7 @@ class Task1:
     camera = None
     index = None
     def connect(self):
-        self.client = MQTTClient("vnmduy2002" , "key_goes_here")
+        self.client = MQTTClient("name_goes_here" , "key_goes_here")
         self.client.connect()
         self.client.loop_background()
         return
